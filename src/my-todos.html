@@ -1,0 +1,54 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="shared-styles.html">
+<link rel="import" href="my-todo.html">
+
+<dom-module id="my-todos">
+  <template>
+    <style include="shared-styles">
+       :host {
+        display: block;
+        padding: 10px;
+      }
+    </style>
+    <paper-input label="Input label" id="new-todo"></paper-input>
+    <paper-button raised on-click="addItem" class="green"> Add</paper-button>
+    <template is="dom-repeat" items="{{todos}}">
+      <my-todo text="{{item.text}}" time="{{item.time}}"></my-todo>
+    </template>
+  </template>
+  <script>
+    Polymer({
+      is: 'my-todos',
+      properties: {
+        todos: {
+          type: Array,
+          notify: true
+        }
+      },
+      ready: function () {
+        this.todos = [{
+            text: 'Eat burgers',
+            time: Date.now()
+          },
+          {
+            text: 'Eat more burgers',
+            time: Date.now()
+          }
+        ];
+      },
+      editItem: function (item) {
+        console.log('edit:', item.target);
+      },
+      addItem: function (e) {
+        const newTodo = this.$['new-todo'];
+        this.push('todos', {
+          text: newTodo.value,
+          time: Date.now()
+        });
+        newTodo.value = '';
+      }
+    });
+  </script>
+</dom-module>
